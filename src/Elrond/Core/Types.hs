@@ -1,5 +1,5 @@
 -- |
--- Module      : Elrond.Client
+-- Module      : Elrond.Core.Types
 -- Description :
 -- Copyright   : (c) Jonatan H Sundqvist, 2015
 -- License     : MIT
@@ -21,15 +21,13 @@
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- GHC Pragmas
 --------------------------------------------------------------------------------------------------------------------------------------------
--- {-# LANGUAGE OverloadedStrings #-}
--- {-# LANGUAGE ViewPatterns      #-}
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- API
 --------------------------------------------------------------------------------------------------------------------------------------------
-module Elrond.Client where
+module Elrond.Core.Types where
 
 
 
@@ -37,36 +35,49 @@ module Elrond.Client where
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
 import qualified Data.ByteString.Lazy as BS
-import qualified Data.ByteString.Lazy.Char8 as C
+import           Data.Word
+import           Data.Functor
+import           Data.Convertible
+import           Data.DateTime
+import           Data.Time.Clock
 
 import Text.Printf
 
-import Control.Monad
-import Control.Concurrent
+import Network.HTTP.Server
+import Network.HTTP.Server.Logger
+import Network.URL
 
-import Network.HTTP.Client
-import Network.HTTP.Types.Status (statusCode)
+-- import Database.HDBC
+-- import Database.Sqlite3
 
-import Elrond.Core.Types
+import qualified Data.Aeson as JSON
+-- import           Data.Aeson (toJSON, fromJSON)
 
 
 
 --------------------------------------------------------------------------------------------------------------------------------------------
--- Functions
+-- Types
+--------------------------------------------------------------------------------------------------------------------------------------------
+
 --------------------------------------------------------------------------------------------------------------------------------------------
 
 -- |
-start :: IO ()
-start = do
-  manager <- newManager defaultManagerSettings
-  request <- parseUrl "http://192.168.1.88:8000/flic.html"
+data Person = Person {}
 
-  forM [(1::Int)..5] $ \n -> do
-    printf "\n\n---- %s %d %s\n\n" "Request" n (replicate 60 '-')
-    response <- httpLbs request manager
 
-    printf "The status code was '%s'.\n" (show . statusCode $ responseStatus response)
-    printf "The response body was '%s'.\n" (C.unpack $ responseBody response)
-    threadDelay $ round (2.5 * 10^6)
+-- |
+data Message = Message { _sender     :: Person,
+                         _timestamp  :: UTCTime,
+                         _payload    :: BS.ByteString,
+                         _recipients :: [Person] }
 
-  return ()
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+-- |
+newtype IP = IP (Word8, Word8, Word8, Word8)
+
+--------------------------------------------------------------------------------------------------------------------------------------------
+
+-- |
+instance Show IP where
+  show (IP (a, b, c, d)) = printf "%d.%d.%d.%d" a b c d

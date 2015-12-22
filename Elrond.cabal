@@ -15,7 +15,7 @@ cabal-version:       >=1.10
 
 library
   hs-source-dirs:      src
-  exposed-modules:     Elrond.Core, Elrond.Client, Elrond.Server
+  exposed-modules:     Elrond.Core, Elrond.Core.Types, Elrond.Client, Elrond.Server
   build-depends:       base >= 4.7 && < 5,
                        http-server,
                        lens,
@@ -27,13 +27,14 @@ library
                        containers,
                        aeson,
                        time,
+                       datetime,
                        convertible,
                        directory
   -- HDBC, HDBC-sqlite3,
   default-language:    Haskell2010
 
-  extra-include-dirs: C:/Users/Jonatan/Downloads/Programmering/sqlite-amalgamation-3081101/sqlite-amalgamation-3081101
-  extra-lib-dirs:     C:/Users/Jonatan/Desktop/Haskell/projects/Jeopardy
+  include-dirs:        C:/Users/Jonatan/Downloads/Programmering/sqlite-amalgamation-3081101/sqlite-amalgamation-3081101
+  extra-lib-dirs:      C:/Users/Jonatan/Desktop/Haskell/projects/Jeopardy
 
 executable Elrond-exe
   hs-source-dirs:      app

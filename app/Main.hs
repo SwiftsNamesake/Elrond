@@ -34,9 +34,12 @@ module Main where
 --------------------------------------------------------------------------------------------------------------------------------------------
 -- We'll need these
 --------------------------------------------------------------------------------------------------------------------------------------------
-import Elrond.Core
-import Elrond.Server
-import Elrond.Client
+import System.Environment (getArgs)
+import Control.Concurrent
+
+import qualified Elrond.Core   as Core
+import qualified Elrond.Server as Server
+import qualified Elrond.Client as Client
 
 
 
@@ -46,4 +49,13 @@ import Elrond.Client
 
 -- |
 main :: IO ()
-main = putStrLn "Elvish nonsense and dwarvish tenacity."
+main = do
+  putStrLn "Elvish nonsense and dwarvish tenacity."
+  args <- getArgs
+  case take 1 args of
+    ["server"] -> Server.start
+    ["client"] -> Client.start
+    _          -> putStrLn "Put up your umbrellas, folks. Shit just hit the fan."
+  threadDelay $ round (5.0 * 10^6)
+  putStrLn "Shutting down..."
+  error "TODO: Figure out a better way to stop the server."
