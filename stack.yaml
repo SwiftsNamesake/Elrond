@@ -1,4 +1,8 @@
-extra-deps: []
+extra-deps:
+ - HDBC-2.4.0.1
+ - HDBC-sqlite3-2.3.3.1
+ - http-server-1.0.6
+ - mime-0.4.0.2
 resolver: lts-3.5
 flags: {}
 packages:

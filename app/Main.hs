@@ -46,4 +46,4 @@ import Elrond.Client
 
 -- |
 main :: IO ()
-main = someFunc
+main = putStrLn "Elvish nonsense and dwarvish tenacity."
